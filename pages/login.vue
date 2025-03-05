@@ -60,7 +60,7 @@ const password = ref('')
 async function handleLogin() {
     const success = await login(username.value, password.value)
     if (success) {
-        router.push('/')
+        router.push('/projects/active')
     }
 }
 
@@ -68,7 +68,7 @@ async function handleLogin() {
 onMounted(() => {
     const { authenticated } = useAuth()
     if (authenticated.value) {
-        router.push('/')
+        router.push('/projects/active')
     }
 })
 </script>

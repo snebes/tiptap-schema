@@ -14,7 +14,7 @@
                         <div v-if="loading">Loading...</div>
                         <div v-else-if="error">{{ error }}</div>
                         <div v-else class="border-4 border-dashed border-gray-200 rounded-lg p-4">
-
+                            <pre>{{ JSON.stringify(dashboardData, null, 2) }}</pre>
                         </div>
                     </div>
                 </div>
@@ -36,6 +36,13 @@ onMounted(async () => {
         return router.push('/login')
     }
 
-    loading.value = false
+    try {
+        const data = await $fetch('/api/dashboard/data')
+        dashboardData.value = data
+    } catch (e) {
+        error.value = 'Failed to load dashboard data'
+    } finally {
+        loading.value = false
+    }
 })
 </script>

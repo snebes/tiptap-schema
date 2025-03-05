@@ -8,6 +8,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
     // If user is authenticated and trying to access login page
     if (authenticated.value && to.path === '/login') {
-        return navigateTo('/')
+        return navigateTo('/projects/active')
     }
 })
