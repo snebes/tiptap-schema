@@ -1,7 +1,20 @@
 export const useAuth = () => {
     const authenticated = useState('authenticated', () => false)
-    const loading = useState('authLoading', () => false)
+    const loading = useState('authLoading', () => true) // Start with loading true
     const error = useState('authError', () => null)
+
+    const checkAuth = async () => {
+        try {
+            const response = await $fetch('/api/auth/check')
+            authenticated.value = response.authenticated
+            return true
+        } catch {
+            authenticated.value = false
+            return false
+        } finally {
+            loading.value = false
+        }
+    }
 
     const login = async (username: string, password: string) => {
         loading.value = true
@@ -32,6 +45,7 @@ export const useAuth = () => {
         loading,
         error,
         login,
-        logout
+        logout,
+        checkAuth
     }
 }

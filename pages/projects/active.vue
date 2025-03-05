@@ -24,15 +24,20 @@
 </template>
 
 <script setup>
-const { authenticated } = useAuth()
+const { authenticated, loading } = useAuth()
 const router = useRouter()
 
-const loading = ref(true)
+const dashboardLoading = ref(true)
 const error = ref(null)
 const dashboardData = ref(null)
 
+// Add cookie check
+const cookieExists = useCookie('auth_token')
+console.log('Auth cookie exists:', !!cookieExists.value)
+
 onMounted(async () => {
     if (!authenticated.value) {
+        console.log('Not authenticated, redirecting to login')
         return router.push('/login')
     }
 
@@ -41,8 +46,9 @@ onMounted(async () => {
         dashboardData.value = data
     } catch (e) {
         error.value = 'Failed to load dashboard data'
+        console.error('Dashboard error:', e)
     } finally {
-        loading.value = false
+        dashboardLoading.value = false
     }
 })
 </script>
